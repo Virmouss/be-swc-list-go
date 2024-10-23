@@ -1,0 +1,88 @@
+// Which syntax this file uses.
+syntax = "proto3";
+// import "google/protobuf/timestamp.proto";
+// import "google/protobuf/struct.proto";
+// import "google/protobuf/any.proto";
+
+// Specify the package we want to use for our generated Go Modules.
+option go_package = "be-swc-list/swc";
+
+message GetSWCListReq {
+    int32 page_number = 1;
+    int32 page_size = 2;
+    string environment = 3;
+    string group = 4;
+
+}
+
+message ItemList {
+    MinRange min_range = 1;
+    MaxRange max_range = 2;
+    StartBearing start_bearing = 3;
+    EndBearing end_bearing = 4;
+}
+
+message MinRange {
+    double value = 1;
+    double default = 2;
+    bool is_available = 3;
+}
+
+message MaxRange {
+    double value = 1;
+    double default = 2;
+    bool is_available = 3;
+}
+
+message StartBearing {
+    double value = 1;
+    double default = 2;
+    bool is_available = 3;
+}
+
+message EndBearing {
+    double value = 1;
+    double default = 2;
+    bool is_available = 3;
+}
+
+message GetSWCListRes {
+    message SWCListData{
+        string type = 1;
+        string groupSWC = 2;
+        ItemList item_list = 3;
+        string environment = 4;
+    }
+    repeated SWCListData swcListData = 1;
+    int32 total_data = 2;
+    int32 total_data_all = 3;
+}
+
+message GetSWCParameterByIdReq {
+    int32 id = 1;
+}
+
+message GetSWCParameterByIdRes {
+     int64 id = 1;
+     string type = 2;
+     string groupSWC = 3;
+     string item = 4;
+     string environment = 5;
+    double value = 6;
+    double default = 7;
+     string unit = 8;
+     string updated_at = 9;
+     string created_at = 10;
+}
+
+message ErrorResponse {
+    string message = 1;
+    string errorCode = 2;
+}
+message EmptyRequest {}
+
+// Service contract
+service SWCList {
+    rpc GetSWCList(GetSWCListReq) returns (GetSWCListRes);
+    rpc GetSWCDatabyID(GetSWCParameterByIdReq) returns (GetSWCParameterByIdRes);
+}
