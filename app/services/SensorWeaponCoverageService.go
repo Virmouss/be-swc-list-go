@@ -89,7 +89,6 @@ func (s *SensorWeaponCoverageService) GetSwcList(ctx context.Context, swcRequest
 		item := result.Item
 		items := strings.Split(item, ",")
 
-		// Split and parse the comma-separated values into slices
 		valueStrArr := strings.Split(valueStr, ",")
 		defaultValueStrArr := strings.Split(defaultValueStr, ",")
 		itemsArr := strings.Split(item, ",")

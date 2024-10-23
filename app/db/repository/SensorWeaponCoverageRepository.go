@@ -24,10 +24,9 @@ func NewSWCRepo() *SensorWeaponCoverageRepo {
 func FindAllByGroup(db *gorm.DB, page, pageSize int32) []model.SWCParameterResult {
 	var results []model.SWCParameterResult
 
-	// Pagination: Calculate offset
+	//Calculate offset for Pagination
 	offset := (page - 1) * pageSize
 
-	// Perform the query with pagination
 	err := db.Where("is_deleted = ?", false).
 		Order("group_swc").
 		Limit(int(pageSize)).
@@ -62,10 +61,6 @@ func FindAllByParams(db *gorm.DB, page, pageSize int32) []model.SWCParameterResu
 func FindGroup(db *gorm.DB) []model.SWCParameterResult {
 	var results []model.SWCParameterResult
 
-	// err := db.Where("is_deleted = ?", false).
-	// 	Order("group_swc").
-	// 	Group("group_swc, environment").
-	// 	Find(&results)
 	err := db.Raw("SELECT group_swc FROM sensor_weapon_coverage WHERE is_deleted = false GROUP BY group_swc, environment").Scan(&results).Error
 
 	if err != nil {
@@ -157,8 +152,6 @@ func GetSWCParameterResultsParams(db *gorm.DB, pattern string, page, pageSize in
           AND STRING_AGG(CAST(item AS TEXT), ',') ILIKE '%Min. Range%'
         LIMIT ? OFFSET ?
     `
-
-	// Execute the raw query with the pattern, page size, and offset
 	result := db.Raw(query, pattern, pageSize, offset).Scan(&results)
 	if result.Error != nil {
 		return nil
@@ -209,7 +202,6 @@ func GetSWCParameterEnvAirResultsParams(db *gorm.DB, pattern string, page, pageS
 func GetSWCParameterEnvAirResults(db *gorm.DB, page, pageSize int32) []model.SWCParameterResult {
 	var results []model.SWCParameterResult
 
-	// Calculate the offset for pagination
 	offset := (page - 1) * pageSize
 
 	query := `
@@ -249,7 +241,6 @@ func GetSWCParameterEnvAirResults(db *gorm.DB, page, pageSize int32) []model.SWC
 
 func GetSWCParameterEnvNonAirResultsParams(db *gorm.DB, pattern string, page, pageSize int32) []model.SWCParameterResult {
 	var results []model.SWCParameterResult
-	//var test []model.SWCParameterResult
 
 	// Calculate the offset for pagination
 	offset := (page - 1) * pageSize
@@ -277,13 +268,6 @@ func GetSWCParameterEnvNonAirResultsParams(db *gorm.DB, pattern string, page, pa
 		GROUP BY group_swc, environment, sp.type
 		LIMIT ? OFFSET ?
     `
-
-	// err := db.Raw(query, "Gun PORT", pageSize, offset).Scan(&test).Error
-	// if err != nil {
-	// 	return nil
-	// }
-	// log.Println("Query var test")
-	// Execute the raw query with the pattern, page size, and offset
 	result := db.Raw(query, pattern, pageSize, offset).Scan(&results)
 	if result.Error != nil {
 		return nil
