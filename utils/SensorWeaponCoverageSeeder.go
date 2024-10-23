@@ -8,23 +8,10 @@ import (
 	"gorm.io/gorm"
 )
 
-// type SensorWeaponCoverageSeeder struct {
-// 	db *gorm.DB
-// }
-
-// func NewSensorWeaponCoverageSeeder() *SensorWeaponCoverageSeeder {
-
-// 	db, err := db.ConnectDB()
-// 	if err != nil {
-// 		log.Fatalf(db, "Failed to connect to the database: %v", err)
-// 	}
-
-// 	return &SensorWeaponCoverageSeeder{db: db}
-// }
-
 func Seed(db *gorm.DB) {
 	var count int64
 
+	//Create table if it doesnt exist in the database
 	db.AutoMigrate(&model.SensorWeaponCoverage{})
 	db.Model(&model.SensorWeaponCoverage{}).Count(&count)
 
